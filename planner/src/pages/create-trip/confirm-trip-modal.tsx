@@ -1,12 +1,16 @@
 import { X, User, Mail, Backpack } from "lucide-react";
 import { FormEvent } from "react";
 import { Button } from "../../components/button";
+import { format } from "date-fns";
+import { DateRange } from "react-day-picker";
 
 interface IConfirmTripModalProps {
   closeConfirmTripModal: () => void;
   createTrip: (event: FormEvent<HTMLFormElement>) => void;
   setOwnerName: (name: string) => void;
   setOwnerEmail: (email: string) => void;
+  destination: string | null;
+  eventDates: DateRange | undefined;
 }
 
 export const ConfirmTripModal = ({
@@ -14,7 +18,17 @@ export const ConfirmTripModal = ({
   createTrip,
   setOwnerName,
   setOwnerEmail,
+  destination,
+  eventDates
 }: IConfirmTripModalProps) => {
+  
+  const displayedDate =
+  eventDates && eventDates.from && eventDates.to
+    ? format(eventDates.from, "d' de 'LLL")
+        .concat(" até ")
+        .concat(format(eventDates.to, "d' de 'LLL"))
+    : null;
+
   return (
     <div className="fixed inset-0 bg-black/60 flex items-center justify-center">
       <div className="w-[640px] rounded-xl py-5 px-6 shadow-shape bg-zinc-900 space-y-5">
@@ -29,12 +43,12 @@ export const ConfirmTripModal = ({
           </div>
           <p className="text-sm text-zinc-400">
             Para concluir a criação da viagem para{" "}
-            <span className="text-zinc-100 font-semibold">Florianópolis</span>,
-            Brasil nas datas de{" "}
             <span className="text-zinc-100 font-semibold">
-              6 a 27 de Agosto de 2024{" "}
+              {destination}
             </span>
-            preencha seus dados abaixo:
+            , Brasil nas datas de{" "}
+            <span className="text-zinc-100 font-semibold">{displayedDate}</span>
+            {" "}preencha seus dados abaixo:
           </p>
         </div>
 

@@ -6,6 +6,7 @@ import { DestinationAndDateSteps } from "./steps/destination-and-date-step";
 import { InviteGuestsStep } from "./steps/invite-guests-step";
 import { DateRange } from "react-day-picker";
 import { api } from "../../lib/axios";
+import toast from "react-hot-toast";
 
 export const CreateTripPage = () => {
   const [isGuestsInputOpen, setIsGuestsInputOpen] = useState(false);
@@ -76,26 +77,26 @@ export const CreateTripPage = () => {
     event.preventDefault();
 
     if (!destination) {
-      return;
+      return toast.error("Por favor, adicione um destino")
     }
 
     if (!eventDates?.from || !eventDates?.to) {
-      return;
+      return toast.error("Por favor, adicione datas para a sua viagem")
     }
 
     if (emailsToInvite.length === 0) {
-      return;
+      return toast.error("Convide pelo menos um participante")
     }
 
     if (!ownerName || !ownerEmail) {
-      return;
+      return toast.error("Nome e/ou email inválidos")
     }
 
     const response = await api.post("/trips", {
       destination,
       starts_at: eventDates.from,
       ends_at: eventDates.to,
-      emails_to_invite: [emailsToInvite],
+      emails_to_invite: emailsToInvite,
       owner_name: ownerName,
       owner_email: ownerEmail,
     });
@@ -162,8 +163,12 @@ export const CreateTripPage = () => {
           createTrip={createTrip}
           setOwnerName={setOwnerName}
           setOwnerEmail={setOwnerEmail}
+          destination={destination}
+          eventDates={eventDates}
         />
       )}
     </div>
   );
 };
+
+

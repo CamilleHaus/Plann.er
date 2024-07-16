@@ -1,18 +1,24 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { CreateTripPage } from "./pages/create-trip";
 import { TripDetails } from "./pages/trip-details";
+import ToasterContext from "./context/ToastContext";
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <CreateTripPage />
+    element: <CreateTripPage />,
   },
   {
-    path: "/trips/trip123",
-    element: <TripDetails />
-  }
-])
+    path: "/trips/:tripId",
+    element: <TripDetails />,
+  },
+]);
 
 export const App = () => {
-  return <RouterProvider router={router}/>
-}
+  return (
+    <>
+      <ToasterContext />
+      <RouterProvider router={router} />
+    </>
+  );
+};
