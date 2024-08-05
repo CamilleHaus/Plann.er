@@ -21,6 +21,8 @@ export const CreateActivityModal = ({
     const title = data.get("title")?.toString();
     const occurs_at = data.get("occurs_at")?.toString();
 
+    console.log(occurs_at)
+
     await api.post(`/trips/${tripId}/activities`, {
       title,
       occurs_at,
